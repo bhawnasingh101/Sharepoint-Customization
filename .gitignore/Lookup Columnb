@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+
+namespace First_LookUp
+{
+    class Program
+    {
+        static String _Url = "http://iqindia:9454/sites/redhawk/euphony/";
+        static void Main(string[] args)
+        {
+                   
+            using (ClientContext context = new ClientContext(_Url))
+            {
+             
+
+                Web web = context.Web;
+
+                List booksList = context.Web.Lists.GetByTitle("Company");
+
+                List list = context.Web.Lists.GetByTitle("First");
+
+                context.Load(list, l => l.Fields);
+                context.Load(booksList, b => b.Id);
+                context.ExecuteQuery();
+
+                string schemaLookupField = @"<Field Type='Lookup' Name='LK_First' StaticName='LK_First' DisplayName='LK_First' List='" + booksList.Id + "' ShowField = 'Title' />";
+                Field lookupField = list.Fields.AddFieldAsXml(schemaLookupField, true, AddFieldOptions.DefaultValue);
+                lookupField.Update();
+
+                context.Load(lookupField);
+                context.ExecuteQuery();
+            }
+
+
+
+        }
+    }
+}
