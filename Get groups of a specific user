@@ -1,0 +1,54 @@
+
+<html>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+<script type="text/javascript">  
+    $(document).ready(function(){
+    $("#txtUser").attr("visibility", "visible"); 
+    $("#btnDone").click(getCurrentUser); 
+       });
+    
+    
+   
+    function getCurrentUser() {  
+        //getUserWebPermissionREST();  
+        $.ajax({  
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/CurrentUser",  
+            method: "GET",  
+            headers: { "Accept": "application/json; odata=verbose" },  
+            success: function (data) { 
+            	debugger; 
+                getCurrentUserGroupColl(data.d.Id);  
+            },  
+            error: function (data) {  
+                alert("something went wrong...");  
+            }  
+        });  
+  
+    }  
+    function getCurrentUserGroupColl(UserID) {  
+        $.ajax  
+        ({  
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/GetUserById("   + UserID + ")/Groups",  
+            method: "GET",  
+            headers: { "Accept": "application/json; odata=verbose" },  
+            success: function (data) {  
+                /* get all group's title of current user. */  
+                var results = data.d.results; 
+                var InnrHtmlgrp = "<ul>";  
+                for (var i = 0; i < results.length; i++) {  
+                if(results[i].Title=="Designer")
+                $("#txtUser").hide();
+                    InnrHtmlgrp += "<li>" + results[i].Title + "</li>";  
+                }  
+                $("#Group").append(InnrHtmlgrp + "</ul>");  
+            }  
+        });  
+    }  
+</script>  
+<body>
+  <strong> Groups in which user exists :-</strong>  
+      <div id="Group"></div>
+      <input type="text" id="txtUser">
+      <input type="button" value="Done" id="btnDone">
+      </body>
+      </html>
