@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
+        type="text/css" />
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            $("#txtDate").datepicker({
+				showAnim:'drop',
+				numberOfMonth:1,
+				dateFormat:'dd/mm/yy',
+				maxDate:0,
+                onSelect: function (selectedDate) {
+                    alert(selectedDate);
+                }
+            });
+			$("#btnOK").click(
+								function(){ var x=$("#txtDate").val();alert(x);Set_date();}
+								);
+        });
+		function Set_date() {
+  
+   $.ajax({  
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Multi')/items",  
+        type: "POST",  
+        data: JSON.stringify({  
+            __metadata: {  
+                type: "SP.Data.MultiListItem" 	
+            },  
+            Title:$("#txtTitle").val(),
+			Date_Time:$("#txtDate").datepicker('getDate');
+			
+        }),  
+        headers: {    
+            "Accept": "application/json;odata=verbose",    
+            "Content-Type": "application/json;odata=verbose",    
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),      
+        },  
+        success: function(data){  
+            alert("Data is saved successfully");  
+        },  
+        error: function(error){  
+            alert(JSON.stringify(error));  
+       }  
+    });
+   
+   
+} 
+    </script>
+</head>
+<body>
+    <input id="txtDate" type="text" />
+	<input type="button" id="btnOK" value="OK">
+</html>
