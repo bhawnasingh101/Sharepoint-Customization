@@ -1,0 +1,65 @@
+<script src="https://kaychennel.sharepoint.com/sites/techtrishna/conatus/SharepointMates/jquery-3.3.1.js"
+type="text/javascript"></script>
+<script type="text/javascript">
+
+var url = _spPageContextInfo.webAbsoluteUrl +
+"/_api/web/lists/getbytitle('Excel')/items?$top=1000";
+    var response = response || [];
+
+function GetListItems(){
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            headers: {
+                "Accept": "application/json; odata=verbose"
+            },
+            success: function(data){
+             debugger;
+
+                response = response.concat(data.d.results);
+                if (data.d.__next) {
+                    url = data.d.__next;
+                    GetListItems();
+                                  }
+
+                    var tableContent = '<table id="tableCars" style="width:100%"
+border="1 px"><thead><tr><td>Make</td>' + '<td>Model</td>' +
+'</tr></thead><tbody>';
+
+     for (var i = 0; i < response.length; i++) {
+         tableContent += '<tr>';
+         tableContent += '<td>' + response[i].Title  + '</td>';
+         tableContent += '<td>' + response[i].ID + '</td>';
+
+         tableContent += '</tr>';
+                    }
+   $('#carsGrid').append(tableContent);
+   },
+
+            error: function(error){
+                   alert("somethimg went wrong....");
+            }
+        });
+    }
+
+</script>
+<input type="button" id="btnClick" value="GetValues" onclick="GetListItems()"/>
+<div id="CustomerPanel">
+   <table id='tableCars' style="width: 100%;" border="1 px">
+     <tr>
+       <td>
+          <div id="carsGrid" style="width: 100%"></div>
+      </td>
+    </tr>
+ </table>
+</div/>
+<div id="CustomerPanel">
+   <table id='tableCars' style="width: 100%;" border="1 px">
+     <tr>
+       <td>
+          <div id="carsGrid" style="width: 100%"></div>
+      </td>
+    </tr>
+ </table>
+</div>
