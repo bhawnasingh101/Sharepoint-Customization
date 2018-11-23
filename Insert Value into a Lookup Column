@@ -1,0 +1,76 @@
+
+
+function set_LookUp()
+{
+	/*Here lookup value is coming from Performance list and Title column*/
+
+<div>  
+    <label>Title:</label>  
+	<input type="text" id="txtTitle"/>
+	<label>Value:</label>  
+	 <select class="form-control" id="ddlPerformance">
+            <option value="-1">Select Performance</option>
+      </select>
+	<button type="button" id="btnOK">OK</button>
+	
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+<script>
+$(document).ready(function() { 
+					GetPerformance();    
+					$("#btnOK").click(function (){
+					var title = $('#inputName').val();
+					var performance = $('#ddlPerformance option:selected').val();
+                        createListItem(title, performance);
+					
+					});
+});
+function GetPerformance(){
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/lists/getbytitle('Performance')/items",
+                method: "GET",
+                headers: { "Accept": "application/json;odata=verbose" },
+                async:false,
+                success: function(data){
+                    var result = data.d.results;
+                    var option = "";
+                    if(result.length > 0){
+                        $.each(result, function(index, value){
+                            option += '<option value="' + value.Id + '">' + value.Title + '</option>'; 
+                        });
+                        $('#ddlPerformance').append(option);
+                    }
+                },
+                error: function(err){
+                    alert(err.message);
+                }
+            });
+        }
+function createListItem(title, performance) {debugger;		 
+			
+			
+   $.ajax({  
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Multi')/items",  
+        type: "POST",  
+        data: JSON.stringify({  
+            __metadata: {  
+                type: "SP.Data.MultiListItem" 	
+            },  
+            Title:$("#txtTitle").val(),
+            "PerformanceId": parseInt(performance)	
+        }),  
+        headers: {    
+            "Accept": "application/json;odata=verbose",    
+            "Content-Type": "application/json;odata=verbose",    
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),      
+        },  
+        success: function(data){  
+            alert("Data is saved successfully");  
+        },  
+        error: function(error){  
+            alert(JSON.stringify(error));  
+       }  
+    });
+} 
+</script> 
+}
