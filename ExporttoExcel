@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<p>Click the button to alert the innerHTML of the cell with id="myTd" in the table's first row.</p>
+
+<table id="myTable">
+<thead><tr><td>column1</td><td>Column2</td></tr></tbody>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr><tr>
+    <td id="myTd">Row1 cell1</td>
+    <td><a href=""><img src="C:\Users\Amit Kumar\Desktop\Amit Files\IMAGES\logo1.jpg"></a></td>
+  </tr>
+  <tr>
+    <td>Row2 cell1</td>
+    <td>Row2 cell2</td>
+  </tr>
+  <tr>
+    <td>Row3 cell1</td>
+    <td>Row3 cell2</td>
+  </tr>
+</table>
+<br> 
+
+<button onclick="myFunction()">Try it</button>
+
+<script>
+function myFunction() {
+  alert(document.getElementById("myTable").rows[0].cells.namedItem("myTd").innerHTML);
+}
+
+
+
+function fnExcelReport()
+    {
+             var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+             var textRange; var j=0;
+          tab = document.getElementById('myTable'); // id of table
+
+
+          for(j = 0 ; j < tab.rows.length ; j++) 
+          {     
+                tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+                //tab_text=tab_text+"</tr>";
+          }
+
+          tab_text=tab_text+"</table>";
+          tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g,"");//remove if u want links in your table
+          tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+                      tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi,""); // reomves input params
+
+               var ua = window.navigator.userAgent;
+              var msie = ua.indexOf("MSIE "); 
+
+                 if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                    {
+                           txtArea1.document.open("txt/html","replace");
+                           txtArea1.document.write(tab_text);
+                           txtArea1.document.close();
+                           txtArea1.focus(); 
+                            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+                          }  
+                  else                 //other browser not tested on IE 11
+                      sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+
+                      return (sa);
+                            }
+
+   
+        
+
+    
+
+        
+</script>
+<iframe id="txtArea1" style="display:none"></iframe>
+<button id="btnExport" onclick="fnExcelReport();"> EXPORT 
+        </button>
+
+</body>
+</html>
